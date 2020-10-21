@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Infrastructure\BaseRepository.cs" />
     <Compile Include="Infrastructure\Contracts\IBaseRepository.cs" />
     <Compile Include="Infrastructure\Contracts\IUnitOfWork.cs" />

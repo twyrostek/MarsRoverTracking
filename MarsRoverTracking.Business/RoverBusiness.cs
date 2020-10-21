@@ -1,6 +1,7 @@
 ﻿using MarsRoverTracking.Business.Interfaces;
 using MarsRoverTracking.Domain;
 using MarsRoverTracking.Domain.RequestObjects;
+using MarsRoverTracking.Domain.ResponseObjects;
 using MarsRoverTracking.Repository;
 using MarsRoverTracking.Repository.Infrastructure;
 
@@ -17,26 +18,44 @@ namespace MarsRoverTracking.Business
             roverRepository = new RoverRepository(_unitOfWork);
         }
 
-        public Position GetRoverPosition(string RoverId)
+        public GetRoverPositionResponseObject GetRoverPosition(GetRoverPositionRequestObject requestObject)
         {
+            GetRoverPositionResponseObject responseObject = new GetRoverPositionResponseObject();
             Position position = new Position();
-
-            Rover rover = roverRepository.SingleOrDefault(m => m.Id == RoverId);
-
-            position.PosX = rover.PosX;
-            position.PosY = rover.PosY;
-            
-            return position;
+            if (!requestObject.IsValid())
+            {
+                responseObject.Message = "The request was invalid";
+                return responseObject;
+            }
+            Rover rover = roverRepository.SingleOrDefault(m => m.Id == requestObject.RoverId);
+            if (rover != null)
+            {
+                position.PosX = rover.PosX;
+                position.PosY = rover.PosY;
+                responseObject.Message = "Your rover was found";
+                responseObject.CurrentPosition = position.getResponseString();
+            }
+            else
+            {
+                responseObject.Message = "The requested RoverId does not exist";
+            }
+            return responseObject;
         }
 
         public UpdateRoverResponseObject UpdateRover(UpdateRoverRequestObject requestObject)
         {
+
             UpdateRoverResponseObject responseObject = new UpdateRoverResponseObject();
             Position startPoint = new Position();
             Position endPoint = new Position();
             Rover rover = roverRepository.SingleOrDefault(m => m.Id == requestObject.RoverId);
-
-            if(rover != null)
+            if (!requestObject.IsValid())
+            {
+                responseObject.Message = "The request body was invalid";
+                return responseObject;
+                
+            }
+            if (rover != null)
             {
                 responseObject.Message = "A rover with this RoverId was found. Its position has been updated";
                 startPoint.Orientation = (Orientation)rover.Orientation;
@@ -54,6 +73,9 @@ namespace MarsRoverTracking.Business
                 rover = new Rover();
                 responseObject.Message = "A rover with this RoverId does not exist, a new rover has been created with RoverId:" + requestObject.RoverId;
                 rover.Id = requestObject.RoverId;
+                startPoint.Orientation = (Orientation)rover.Orientation;
+                startPoint.PosX = rover.PosX;
+                startPoint.PosY = rover.PosY;
                 endPoint = ProcessMovementInstruction(startPoint, requestObject.MovementInstruction);
                 roverRepository.Insert(rover);
                 responseObject.CurrentPosition = endPoint.getResponseString();

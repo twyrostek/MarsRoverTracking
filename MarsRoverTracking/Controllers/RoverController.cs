@@ -2,6 +2,7 @@
 using MarsRoverTracking.Business.Interfaces;
 using MarsRoverTracking.Domain;
 using MarsRoverTracking.Domain.RequestObjects;
+using MarsRoverTracking.Domain.ResponseObjects;
 using System.Web.Http;
 using System.Web.Mvc;
 
@@ -20,8 +21,10 @@ namespace MarsRoverTracking.Controllers
         // GET 
         public IHttpActionResult Get(string RoverId)
         {
-
-            return Ok(business.GetRoverPosition(RoverId));
+            GetRoverPositionRequestObject requestObject = new GetRoverPositionRequestObject();
+            requestObject.RoverId = RoverId;
+            GetRoverPositionResponseObject responseObject = business.GetRoverPosition(requestObject);
+            return Ok(responseObject);
         }
 
         // POST

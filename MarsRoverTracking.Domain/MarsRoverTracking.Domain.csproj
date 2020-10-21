@@ -41,10 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestObjects\GetRoverPositionRequestObject.cs" />
     <Compile Include="RequestObjects\UpdateRoverRequestObject.cs" />
+    <Compile Include="ResponseObjects\GetRoverPositionResponseObject.cs" />
     <Compile Include="RoverDomainModel.cs" />
     <Compile Include="ResponseObjects\UpdateRoverResponseObject.cs" />
   </ItemGroup>

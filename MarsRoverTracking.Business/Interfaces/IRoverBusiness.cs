@@ -1,5 +1,6 @@
 ﻿using MarsRoverTracking.Domain;
 using MarsRoverTracking.Domain.RequestObjects;
+using MarsRoverTracking.Domain.ResponseObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace MarsRoverTracking.Business.Interfaces
 {
     public interface IRoverBusiness
     {
-        Position GetRoverPosition(string id);
+        GetRoverPositionResponseObject GetRoverPosition(GetRoverPositionRequestObject requestObject);
         UpdateRoverResponseObject UpdateRover(UpdateRoverRequestObject requestObject);
     }
 }
