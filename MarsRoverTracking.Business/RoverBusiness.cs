@@ -47,7 +47,7 @@ namespace MarsRoverTracking.Business
                 rover.PosX = endPoint.PosX;
                 rover.PosY = endPoint.PosY;
                 roverRepository.Update(rover);
-                responseObject.CurrentPosition = endPoint.PositionResponseString;
+                responseObject.CurrentPosition = endPoint.getResponseString();
             }
             else
             {
@@ -56,14 +56,29 @@ namespace MarsRoverTracking.Business
                 rover.Id = requestObject.RoverId;
                 endPoint = ProcessMovementInstruction(startPoint, requestObject.MovementInstruction);
                 roverRepository.Insert(rover);
-                responseObject.CurrentPosition = endPoint.PositionResponseString;
+                responseObject.CurrentPosition = endPoint.getResponseString();
             }
             return responseObject;
         }
 
         private Position ProcessMovementInstruction(Position startPoint, string movementInstruction)
         {
-            startPoint.PositionResponseString = "(1,1)";
+            foreach(char c in movementInstruction)
+            {
+                switch (c)
+                {
+                    case 'M':
+                        startPoint.Move();
+                        break;
+                    case 'R':
+                        startPoint.TurnRight();
+                        break;
+                    case 'L':
+                        startPoint.TurnLeft();
+                        break;
+
+                }
+            }
             return startPoint;
         }
     }
