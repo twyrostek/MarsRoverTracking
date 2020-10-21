@@ -24,7 +24,7 @@ namespace MarsRoverTracking.Business
             Position position = new Position();
             if (!requestObject.IsValid())
             {
-                responseObject.Message = "The request was invalid";
+                responseObject.Message = "The request body was invalid";
                 return responseObject;
             }
             Rover rover = roverRepository.SingleOrDefault(m => m.Id == requestObject.RoverId);
@@ -32,8 +32,8 @@ namespace MarsRoverTracking.Business
             {
                 position.PosX = rover.PosX;
                 position.PosY = rover.PosY;
-                responseObject.Message = "Your rover was found";
                 responseObject.CurrentPosition = position.getResponseString();
+                responseObject.Message = "Your rover was found";
             }
             else
             {
@@ -57,7 +57,6 @@ namespace MarsRoverTracking.Business
             }
             if (rover != null)
             {
-                responseObject.Message = "A rover with this RoverId was found. Its position has been updated";
                 startPoint.Orientation = (Orientation)rover.Orientation;
                 startPoint.PosX = rover.PosX;
                 startPoint.PosY = rover.PosY;
@@ -67,18 +66,22 @@ namespace MarsRoverTracking.Business
                 rover.PosY = endPoint.PosY;
                 roverRepository.Update(rover);
                 responseObject.CurrentPosition = endPoint.getResponseString();
+                responseObject.Message = "A rover with this RoverId was found. Its position has been updated";
             }
             else
             {
                 rover = new Rover();
-                responseObject.Message = "A rover with this RoverId does not exist, a new rover has been created with RoverId:" + requestObject.RoverId;
                 rover.Id = requestObject.RoverId;
                 startPoint.Orientation = (Orientation)rover.Orientation;
                 startPoint.PosX = rover.PosX;
                 startPoint.PosY = rover.PosY;
                 endPoint = ProcessMovementInstruction(startPoint, requestObject.MovementInstruction);
+                rover.Orientation = (int)endPoint.Orientation;
+                rover.PosX = endPoint.PosX;
+                rover.PosY = endPoint.PosY;
                 roverRepository.Insert(rover);
                 responseObject.CurrentPosition = endPoint.getResponseString();
+                responseObject.Message = "A rover with this RoverId was not found, a new rover has been created with RoverId:" + requestObject.RoverId;
             }
             return responseObject;
         }

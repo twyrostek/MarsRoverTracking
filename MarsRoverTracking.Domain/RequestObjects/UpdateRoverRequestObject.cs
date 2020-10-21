@@ -17,20 +17,12 @@ namespace MarsRoverTracking.Domain.RequestObjects
         {
             bool isValid = true;
             Regex r = new Regex("^[a-zA-Z0-9]*$");
-            if (!r.IsMatch(RoverId))
-            {
-                isValid = false;
-            }
-            if(RoverId.Count() > 10)
+            if (RoverId == null || RoverId.Count() > 10 || RoverId.Count() < 1 || !r.IsMatch(RoverId))
             {
                 isValid = false;
             }
             Regex s = new Regex("^[MRL]*$");
-            if (!s.IsMatch(MovementInstruction))
-            {
-                isValid = false;
-            }
-            if(MovementInstruction.Count() > 100)
+            if (MovementInstruction == null || MovementInstruction.Count() > 10 || MovementInstruction.Count() < 1 || !r.IsMatch(MovementInstruction))
             {
                 isValid = false;
             }

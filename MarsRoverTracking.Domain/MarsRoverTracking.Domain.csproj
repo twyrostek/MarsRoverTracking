@@ -46,7 +46,6 @@
     <Compile Include="RequestObjects\GetRoverPositionRequestObject.cs" />
     <Compile Include="RequestObjects\UpdateRoverRequestObject.cs" />
     <Compile Include="ResponseObjects\GetRoverPositionResponseObject.cs" />
-    <Compile Include="RoverDomainModel.cs" />
     <Compile Include="ResponseObjects\UpdateRoverResponseObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

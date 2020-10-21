@@ -14,11 +14,7 @@ namespace MarsRoverTracking.Domain.RequestObjects
         {
             bool isValid = true;
             Regex r = new Regex("^[a-zA-Z0-9]*$");
-            if (!r.IsMatch(RoverId))
-            {
-                isValid = false;
-            }
-            if (RoverId.Count() > 10)
+            if (RoverId == null || RoverId.Count() > 10 || !r.IsMatch(RoverId))
             {
                 isValid = false;
             }
